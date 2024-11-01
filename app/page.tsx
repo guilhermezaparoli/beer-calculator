@@ -5,6 +5,7 @@ import Image from 'next/image';
 import logo from '../assets/BeerPriceLogo.svg';
 import { useState } from 'react';
 import { Button } from '@/components/Button';
+import CameraComponent from '@/components/CameraComponent';
 
 export default function Home() {
   const [cards, setCards] = useState([
@@ -75,6 +76,7 @@ export default function Home() {
           />
         ))}
       </div>
+      <CameraComponent/>
       <BeerAddCard onAddCard={onAddCard} />
       <footer className="mt-20 pb-4">
         <div className="flex items-center justify-center gap-5">
