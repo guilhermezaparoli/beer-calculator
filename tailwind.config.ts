@@ -11,7 +11,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        white: "#FFFFFF",
+        orange300: "#F2A23F",
+        redTrash: "#EF3A3A",
+        
+
       },
+      backgroundColor: {
+        gray500: "#424141",
+        gray300: "#676460",
+      }
     },
   },
   plugins: [],
