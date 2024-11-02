@@ -11,7 +11,19 @@ export default function CameraComponent() {
   const startCamera = async () => {
     if (typeof window !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: {
+            width: {
+                min: 1280,
+                ideal: 1920,
+                max: 2560
+            },
+            height: {
+                min: 720,
+                ideal: 1080,
+                max: 1440
+            },
+            facingMode: 'user'
+        }  });
         setVideoStream(stream);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
