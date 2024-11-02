@@ -22,7 +22,7 @@ export default function CameraComponent() {
                 ideal: 1080,
                 max: 1440
             },
-            facingMode: 'user'
+            facingMode: 'environment'
         }  });
         setVideoStream(stream);
         if (videoRef.current) {
