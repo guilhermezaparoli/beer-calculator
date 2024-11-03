@@ -17,7 +17,7 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: { exact: 'environment'},
+            facingMode: {ideal: "environment"},
           },
         });
         setVideoStream(stream);
