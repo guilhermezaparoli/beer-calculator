@@ -15,23 +15,41 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
   const startCamera = async () => {
     if (typeof window !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: {ideal: "environment"},
-            width: {
-              ideal: 1080,
-            },
-            height: {
-              ideal: 720
-            }
-          },
-        });
-        setVideoStream(stream);
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        } else {
-          alert("deu b.o");
-        }
+             width: { ideal: 1280 },
+             height: { ideal: 720 },
+             facingMode: "environment" // para usar a câmera traseira
+          }
+       })
+       .then(stream => {
+
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          } else {
+            alert("deu b.o");
+          }
+       })
+       .catch(error => {
+          console.error("Erro ao acessar a câmera:", error);
+       });
+
+        // const stream = await navigator.mediaDevices.getUserMedia({
+        //   video: {
+        //     facingMode: {ideal: "environment"},
+        //     width: {
+        //       ideal: 1080,
+        //     },
+        //     height: {
+        //       ideal: 720
+        //     }
+        //   },
+        // });
+     
+        // stream.addEventListener('addtrack', () => {alert("chegou aqui")})
+        // alert(stream);
+        // setVideoStream(stream);
+       
       } catch (error) {
         console.error('Error accessing the camera:', error);
       }
@@ -55,22 +73,22 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
     }
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     if (videoStream) {
-  //       videoStream.getTracks().forEach((track) => track.stop());
-  //     }
-  //   };
-  // }, [videoStream]);
+  useEffect(() => {
+    return () => {
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [videoStream]);
 
   useEffect(() => {
     startCamera();
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
   }, []);
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center">
-      {videoStream && (
+   
         <div className="h-full w-full absolute inset-0">
           <video
             ref={videoRef}
@@ -92,7 +110,7 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
             Tirar foto
           </button>
         </div>
-      )}
+     
       <canvas ref={canvasRef} className="hidden" />
       {capturedImage && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-4 rounded-lg">
