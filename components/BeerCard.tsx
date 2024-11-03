@@ -45,6 +45,10 @@ export function BeerCard({
     processImage(image);
   }
 
+  function closeCamera(){
+    setOpenCamera(false)
+  }
+
   const processImage = async (imageUrl: string) => {
     console.log('chegou na função');
     try {
@@ -120,7 +124,10 @@ export function BeerCard({
 
         </div>
       </div>
-      {openCamera && <CameraComponent getImage={getImage} />}
+      {openCamera &&<div className='flex items-center justify-center h-screen'>
+
+       <CameraComponent getImage={getImage} close={closeCamera} />
+      </div>}
     </>
   );
 }

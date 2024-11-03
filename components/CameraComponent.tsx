@@ -1,11 +1,12 @@
-'use client';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 
 type CameraComponentProps = {
-    getImage: (image: string) => void
-}
-export default function CameraComponent({getImage}: CameraComponentProps) {
+  getImage: (image: string) => void;
+  close: () => void
+};
+
+export default function CameraComponent({ getImage, close }: CameraComponentProps) {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -14,22 +15,20 @@ export default function CameraComponent({getImage}: CameraComponentProps) {
   const startCamera = async () => {
     if (typeof window !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
+        const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            // width: { min: 1280, ideal: 1920, max: 2560 },
-            // height: { min: 720, ideal: 1080, max: 1440 },
-            facingMode: 'environment'
-          }
+            facingMode: 'environment',
+          },
         });
         setVideoStream(stream);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
       } catch (error) {
-        console.error("Error accessing the camera:", error);
+        console.error('Error accessing the camera:', error);
       }
     } else {
-      alert("Camera access is not supported on this device or browser.");
+      alert('Camera access is not supported on this device or browser.');
     }
   };
 
@@ -49,7 +48,6 @@ export default function CameraComponent({getImage}: CameraComponentProps) {
   };
 
   useEffect(() => {
-
     return () => {
       if (videoStream) {
         videoStream.getTracks().forEach((track) => track.stop());
@@ -58,34 +56,45 @@ export default function CameraComponent({getImage}: CameraComponentProps) {
   }, [videoStream]);
 
   useEffect(() => {
-    startCamera()
-  }, [])
-  console.log(videoStream);
+    startCamera();
+    document.body.style.overflow = 'hidden';
+  }, []);
+
   return (
-    <div className="relative w-screen h-screen flex flex-col items-center">
-      
+    <div className="absolute inset-0 flex flex-col items-center justify-center">
       {videoStream && (
-        <div className="absolute h-full w-full">
-          <video 
-            ref={videoRef} 
-            autoPlay 
-            playsInline 
-            className="w-screen h-screen object-cover"
+        <div className="h-full w-full absolute inset-0">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="h-full w-full object-cover"
           />
-          <button 
-            onClick={capturePhoto} 
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg bg-blue-500 text-white">
-            Take Photo
+          <button
+            onClick={() => {
+              close()
+              document.body.style.overflow = 'auto';
+            }}
+            className="absolute bottom-4 left-1/4 transform -translate-x-1/2 text-white bg-green-500 p-2">
+            Fechar
+          </button>
+          <button
+            onClick={capturePhoto}
+            className="absolute bottom-4 left-3/4 transform -translate-x-1/2 text-white bg-green-500 p-2">
+            Tirar foto
           </button>
         </div>
       )}
-      
       <canvas ref={canvasRef} className="hidden" />
-
       {capturedImage && (
-        <div className="absolute bottom-0 mb-8 text-center bg-black bg-opacity-50 p-4 rounded-lg">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-4 rounded-lg">
           <h2 className="text-white">Foto capturada:</h2>
-          <button className='text-white' onClick={() => getImage(capturedImage)}>Aceitar</button>
+          <button className="text-white" onClick={() => getImage(capturedImage)}>
+            Aceitar
+          </button>
+          <button className="text-red-600" onClick={() => setCapturedImage('')}>
+            Recusar
+          </button>
           <Image src={capturedImage} alt="Captured" width={300} height={200} className="rounded-lg" />
         </div>
       )}

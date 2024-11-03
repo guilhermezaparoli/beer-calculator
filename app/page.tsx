@@ -60,7 +60,7 @@ export default function Home() {
   
   console.log(cards);
   return (
-    <div className="pt-4 px-6 overflow-auto relative">
+    <div className="pt-4 px-6 overflow-auto">
       <div className="flex items-center  justify-center pb-20">
         <Image src={logo} alt="logo" />
       </div>
