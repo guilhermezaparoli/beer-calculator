@@ -7,7 +7,7 @@ type CameraComponentProps = {
 };
 
 export default function CameraComponent({ getImage, close }: CameraComponentProps) {
-  const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
+  // const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -73,13 +73,13 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (videoStream) {
-        videoStream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [videoStream]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (videoStream) {
+  //       videoStream.getTracks().forEach((track) => track.stop());
+  //     }
+  //   };
+  // }, [videoStream]);
 
   useEffect(() => {
     startCamera();
