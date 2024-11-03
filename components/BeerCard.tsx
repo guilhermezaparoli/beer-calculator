@@ -30,8 +30,16 @@ export function BeerCard({
       )
     );
   };
+  const formatPriceBRL = (newValue: string) => {
+    let inputValue = newValue.replace(/\D/g, "");
+    console.log(inputValue);
+    inputValue = (parseInt(inputValue) / 100).toFixed(2);
+    inputValue = inputValue.replace(".", ","); 
+    inputValue = "R$ " + inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
+    handleInputChange("price", inputValue);
+};
 
-  function closeCamera(image: string) {
+  function getImage(image: string) {
     console.log(image, 'aquii');
     setOpenCamera(false);
     processImage(image);
@@ -60,7 +68,7 @@ export function BeerCard({
         handleInputChange('vol', volume);
       }
       if (price) {
-        handleInputChange('price', price);
+        formatPriceBRL(price);
       }
 
       console.log(brand);
@@ -107,11 +115,12 @@ export function BeerCard({
           <InputCard
             placeholder="Preço"
             value={value.price}
-            onChange={(e) => handleInputChange('price', e.target.value)}
+            onChange={(e) => formatPriceBRL(e.target.value)}
           />
+
         </div>
       </div>
-      {openCamera && <CameraComponent closeCamera={closeCamera} />}
+      {openCamera && <CameraComponent getImage={getImage} />}
     </>
   );
 }

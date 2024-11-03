@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 
 type CameraComponentProps = {
-    closeCamera: (image: string) => void
+    getImage: (image: string) => void
 }
-export default function CameraComponent({closeCamera}: CameraComponentProps) {
+export default function CameraComponent({getImage}: CameraComponentProps) {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -85,7 +85,7 @@ export default function CameraComponent({closeCamera}: CameraComponentProps) {
       {capturedImage && (
         <div className="absolute bottom-0 mb-8 text-center bg-black bg-opacity-50 p-4 rounded-lg">
           <h2 className="text-white">Foto capturada:</h2>
-          <button className='text-white' onClick={() => closeCamera(capturedImage)}>Aceitar</button>
+          <button className='text-white' onClick={() => getImage(capturedImage)}>Aceitar</button>
           <Image src={capturedImage} alt="Captured" width={300} height={200} className="rounded-lg" />
         </div>
       )}

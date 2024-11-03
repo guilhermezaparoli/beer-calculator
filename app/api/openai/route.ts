@@ -17,7 +17,7 @@ export const POST = async(req: Request) => {
         {
           role: "user",
           content: [
-            { type: "text", text: "Analyze the provided image to extract the brand name, volume (in liters, milliliters, or other units), and price. If these details are found in the image, return them in the following JSON format without syntax highlighting: {brand: <beer brand>, volume: <beer volume>, price: <beer price>}" },
+            { type: "text", text: "Analyze the provided image to extract the brand name, volume (in liters, milliliters, or other units), and price. If these details are found in the image, return them in the following JSON format without syntax highlighting: {brand: <beer brand>, volume: <beer volume>, price: <beer price>}. If any of these keys are not found, return their values as null." },
             {
               type: "image_url",
               image_url: {url: imageUrl},
@@ -30,7 +30,6 @@ export const POST = async(req: Request) => {
 
     return new Response(JSON.stringify(response.choices[0].message.content))
 
-return new Response("ok")
  
 }
 
