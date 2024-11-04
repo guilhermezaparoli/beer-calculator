@@ -1,55 +1,46 @@
+import { ImagePlus, ImagePlusIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 
 type CameraComponentProps = {
   getImage: (image: string) => void;
-  close: () => void
+  close: () => void;
 };
 
-export default function CameraComponent({ getImage, close }: CameraComponentProps) {
+export default function CameraComponent({
+  getImage,
+  close,
+}: CameraComponentProps) {
   // const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const startCamera = async () => {
-    if (typeof window !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    if (
+      typeof window !== 'undefined' &&
+      navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia
+    ) {
       try {
-        navigator.mediaDevices.getUserMedia({
-          video: {
-             width: { ideal: 1280 },
-             height: { ideal: 720 },
-             facingMode: "environment" // para usar a câmera traseira
-          }
-       })
-       .then(stream => {
-
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-          } else {
-            alert("deu b.o");
-          }
-       })
-       .catch(error => {
-          console.error("Erro ao acessar a câmera:", error);
-       });
-
-        // const stream = await navigator.mediaDevices.getUserMedia({
-        //   video: {
-        //     facingMode: {ideal: "environment"},
-        //     width: {
-        //       ideal: 1080,
-        //     },
-        //     height: {
-        //       ideal: 720
-        //     }
-        //   },
-        // });
-     
-        // stream.addEventListener('addtrack', () => {alert("chegou aqui")})
-        // alert(stream);
-        // setVideoStream(stream);
-       
+        navigator.mediaDevices
+          .getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: 'environment',
+            },
+          })
+          .then((stream) => {
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+            } else {
+              alert('deu b.o');
+            }
+          })
+          .catch((error) => {
+            console.error('Erro ao acessar a câmera:', error);
+          });
       } catch (error) {
         console.error('Error accessing the camera:', error);
       }
@@ -83,45 +74,90 @@ export default function CameraComponent({ getImage, close }: CameraComponentProp
 
   useEffect(() => {
     startCamera();
-    // document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
   }, []);
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center">
-   
-        <div className="h-full w-full absolute inset-0">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            className="h-full w-full object-cover"
-          />
-          <button
-            onClick={() => {
-              close()
-              document.body.style.overflow = 'auto';
-            }}
-            className="absolute bottom-4 left-1/4 transform -translate-x-1/2 text-white bg-green-500 p-2">
-            Fechar
-          </button>
-          <button
-            onClick={capturePhoto}
-            className="absolute bottom-4 left-3/4 transform -translate-x-1/2 text-white bg-green-500 p-2">
-            Tirar foto
-          </button>
-        </div>
-     
+      <div className="h-full w-full absolute inset-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className="h-full w-full object-cover"
+        />
+        <X
+          className="absolute top-2 right-2  text-red-600"
+          onClick={() => {
+            close();
+            document.body.style.overflow = 'auto';
+          }}
+          size={34}
+        />
+
+        <button
+          className=" absolute bottom-4 left-2/4 transform -translate-x-1/2 w-16 h-16 rounded-full bg-white border-4 border-gray-300 focus:outline-none active:bg-gray-200"
+          onClick={capturePhoto}
+        >
+          <div className="absolute inset-0 m-2 rounded-full bg-gray-100"></div>
+        </button>
+
+        <label
+          htmlFor="image"
+          className="absolute bottom-6 left-3/4 text-white"
+        >
+          <ImagePlusIcon size={40} />
+        </label>
+        <input
+          className="hidden"
+          type="file"
+          id="image"
+          accept="image/png, image/jpeg"
+          onChange={(e) => {
+            console.log("Entrou");
+            const file = e.target.files?.[0]
+            if(file){
+              if(file.type.startsWith("image/")){
+                const reader = new FileReader()
+                reader.onloadend = () => {
+                  const dataUrl = reader.result;
+                  setCapturedImage(String(dataUrl))
+                }
+                reader.readAsDataURL(file)
+              }
+            }
+          }}
+        />
+      </div>
+
       <canvas ref={canvasRef} className="hidden" />
       {capturedImage && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-4 rounded-lg">
+        <div className="absolute inset-0 flex flex-col  justify-center bg-black bg-opacity-50 p-4 rounded-lg">
           <h2 className="text-white">Foto capturada:</h2>
-          <button className="text-white" onClick={() => getImage(capturedImage)}>
-            Aceitar
-          </button>
-          <button className="text-red-600" onClick={() => setCapturedImage('')}>
-            Recusar
-          </button>
-          <Image src={capturedImage} alt="Captured" width={300} height={200} className="rounded-lg" />
+          <Image
+            src={capturedImage}
+            alt="Captured"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: '100%', height: 'auto' }}
+            className="rounded-lg"
+          />
+          <div className="flex items-center justify-around mt-2">
+            <button
+              className="flex items-center py-2 px-6 rounded-lg text-white font-bold bg-red-600"
+              onClick={() => setCapturedImage('')}
+            >
+              Cancelar
+            </button>
+
+            <button
+              className="flex items-center py-2 px-6 rounded-lg text-white font-bold bg-green-600"
+              onClick={() => getImage(capturedImage)}
+            >
+              Confirmar
+            </button>
+          </div>
         </div>
       )}
     </div>
