@@ -1,0 +1,6 @@
+export function SelectMeasure({...rest}) {
+  return   <select className="bg-gray300 text-white outline-none" {...rest}>
+  <option>Ml</option>    
+  <option>Litro</option>
+</select>;
+}

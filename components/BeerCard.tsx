@@ -2,12 +2,14 @@
 import { Camera, Trash2 } from 'lucide-react';
 import { InputCard } from './InputCard';
 import CameraComponent from './CameraComponent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { SelectMeasure } from './SelectMeasure';
 
 type itemProps = {
   brand: string;
   vol: string;
-  price: string;
+  price:string;
+  volPerPrice: string
 };
 type BeerCardProps = {
   value: itemProps;
@@ -88,8 +90,6 @@ export function BeerCard({
     }
   };
 
-  useEffect(() => {}, []);
-
   return (
     <>
       <div className="p-3 pt-2 bg-gray500 rounded-xl">
@@ -116,11 +116,19 @@ export function BeerCard({
           onChange={(e) => handleInputChange('brand', e.target.value)}
         />
         <div className="flex gap-2 mt-2">
+          <div className='flex'>
+
+          {/* <SelectMeasure /> */}
           <InputCard
-            placeholder="Volume (ml)"
+            placeholder="Volume"
             value={value.vol}
-            onChange={(e) => handleInputChange('vol', e.target.value)}
-          />
+            onChange={(e) => {
+              if(Number(e.target.value || e.target.value === "")){
+                handleInputChange('vol', e.target.value)
+              }
+            }}
+            />
+            </div>
           <InputCard
             placeholder="Preço"
             value={value.price}
@@ -129,7 +137,7 @@ export function BeerCard({
 
         </div>
       </div>
-      {openCamera &&<div className='flex items-center justify-center h-screen'>
+      {openCamera && navigator.mediaDevices &&<div className='flex items-center justify-center h-screen'>
 
        <CameraComponent getImage={getImage} close={closeCamera} />
       </div>}

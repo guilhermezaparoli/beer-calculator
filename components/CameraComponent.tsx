@@ -1,4 +1,4 @@
-import { ImagePlus, ImagePlusIcon, X } from 'lucide-react';
+import {  ImagePlusIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 
@@ -15,6 +15,7 @@ export default function CameraComponent({
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hasCameraPermission, setHasCameraPermission] = useState(false)
 
   const startCamera = async () => {
     if (
@@ -37,9 +38,11 @@ export default function CameraComponent({
             } else {
               alert('deu b.o');
             }
+            setHasCameraPermission(true)
           })
           .catch((error) => {
             console.error('Erro ao acessar a câmera:', error);
+            setHasCameraPermission(false)
           });
       } catch (error) {
         console.error('Error accessing the camera:', error);
@@ -77,7 +80,7 @@ export default function CameraComponent({
     document.body.style.overflow = 'hidden';
   }, []);
 
-  return (
+  return  (
     <div className="absolute inset-0 flex flex-col items-center justify-center">
       <div className="h-full w-full absolute inset-0">
         <video
