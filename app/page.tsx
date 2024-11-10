@@ -113,11 +113,11 @@ export default function Home() {
   console.log(cards, 'cards');
   return (
     <>
-      <div className="pt-4 px-6 overflow-auto">
+      <div className="pt-4 px-6 overflow-y flex flex-col items-center">
         <div className="flex items-center  justify-center pb-20">
           <Image src={logo} alt="logo" />
         </div>
-        <div className="flex flex-col gap-4 mb-10">
+        <div className="flex flex-col gap-4 mb-10 ">
           {cards.map((item, index) => (
             <BeerCard
               key={index}
@@ -147,6 +147,7 @@ export default function Home() {
               }}
             />
           </div>
+
         </footer>
       </div>
 

@@ -116,8 +116,8 @@ export function BeerCard({
           value={value.brand}
           onChange={(e) => handleInputChange('brand', e.target.value)}
         />
-        <div className="flex gap-2 mt-2">
-          <div className="flex">
+        <div className="flex gap-2 mt-2 ">
+          <div className="flex w-full">
             <InputCard
               placeholder="Volume (ml)"
               value={value.vol}
