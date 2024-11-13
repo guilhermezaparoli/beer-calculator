@@ -3,11 +3,11 @@ import { Camera, Trash2 } from 'lucide-react';
 import { InputCard } from './InputCard';
 import CameraComponent from './CameraComponent';
 import { useState } from 'react';
-import { SelectMeasure } from './SelectMeasure';
+import { InputSelectCard } from './InputSelectCard';
 
 type itemProps = {
   brand: string;
-  vol: string;
+  volume: string;
   price: string;
   volPerPrice?: number | null;
   index?: number;
@@ -28,11 +28,23 @@ export function BeerCard({
   const [openCamera, setOpenCamera] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleInputChange = (field: keyof itemProps, newValue: string) => {
+    console.log(newValue, 'newValuenewValue');
+    let newValueField = newValue;
+    if (field === 'volume' && newValueField.endsWith('ml')) {
+      newValueField = newValueField.replace('mlml', 'ml');
+    }
     setCards((prevCards) =>
       prevCards.map((card, idx) =>
-        idx === identificator ? { ...card, [field]: newValue } : card
+        idx === identificator ? { ...card, [field]: newValueField } : card
       )
     );
+  };
+
+  const handleVolumeChange = (newValue: string) => {
+    console.log(newValue, "newValuenewValuenewValue2");
+
+      handleInputChange('volume', newValue);
+ 
   };
 
   const formatPriceBRL = (newValue: string) => {
@@ -75,7 +87,7 @@ export function BeerCard({
         handleInputChange('brand', brand);
       }
       if (volume) {
-        handleInputChange('vol', volume);
+        handleInputChange('volume', volume);
       }
       if (price) {
         formatPriceBRL(price);
@@ -118,17 +130,21 @@ export function BeerCard({
         />
         <div className="flex gap-2 mt-2 ">
           <div className="flex w-full">
-            <InputCard
+            <InputSelectCard
               placeholder="Volume (ml)"
-              value={value.vol}
+              value={value.volume}
+              handleVolumeChange={handleVolumeChange}
               onChange={(e) => {
-                if (Number(e.target.value || e.target.value === '')) {
-                  handleInputChange('vol', e.target.value);
+                const value = e.target.value.replace('ml', '');
+                if (Number(value || value === '')) {
+                  handleInputChange('volume', value.replace('ml', ''));
                 }
               }}
+              suggestions={['269ml', '300ml', '355ml', '473ml', '500ml', '600ml', '1000ml']}
+           
             />
-            {/* <SelectMeasure /> */}
           </div>
+
           <InputCard
             placeholder="Preço"
             value={value.price}

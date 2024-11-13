@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 
 type Item = {
   brand: string;
-  vol: string;
+  volume: string;
   price: string;
   volPerPrice?: number | null;
   index?: number;
@@ -20,9 +20,9 @@ export function ModalResult({ cards, close }: ResultProps) {
   return (
     cards.length > 0 && (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-5">
-        <div className="relative p-6 bg-gray-600 rounded-lg w-full max-w-lg">
+        <div className="relative p-6 bg-gray-700 rounded-lg w-full max-w-lg">
           <X onClick={close} className="text-red-500 absolute top-2 right-2 cursor-pointer" />
-          <h1 className="text-white text-2xl font-semibold mb-4">Resultado das Melhores Opções:</h1>
+          <h1 className="text-white text-xl font-semibold mb-4">Resultado das Melhores Opções:</h1>
           <div className="text-white space-y-4 overflow-auto max-h-96 h-screen">
             {cards.map((card, index) => {
               // Determine the style based on volPerPrice similarity
@@ -54,19 +54,19 @@ export function ModalResult({ cards, close }: ResultProps) {
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold">Marca:</span>
-                    <span>{card.brand || 'Não informado'}</span>
+                    <span>{card.brand || 'Não informada'}</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold">Volume (ml):</span>
-                    <span>{card.vol} ml</span>
+                    <span>{card.volume}</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="font-semibold">Preço:</span>
                     <span>{card.price}</span>
                   </div>
                   <div className="flex justify-between py-1">
-                    <span className="font-semibold">Preço por ml:</span>
-                    <span>{card.volPerPrice}</span>
+                    <span className="font-semibold">Preço por litro:</span>
+                    <span>{card.volPerPrice?.toLocaleString("pt-br", {style: "currency", currency: "BRL"})}</span>
                   </div>
                 </div>
               );

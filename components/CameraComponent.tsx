@@ -15,7 +15,7 @@ export default function CameraComponent({
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [hasCameraPermission, setHasCameraPermission] = useState(false)
+  // const [hasCameraPermission, setHasCameraPermission] = useState(false)
 
   const startCamera = async () => {
     if (
@@ -38,11 +38,11 @@ export default function CameraComponent({
             } else {
               alert('deu b.o');
             }
-            setHasCameraPermission(true)
+            // setHasCameraPermission(true)
           })
           .catch((error) => {
             console.error('Erro ao acessar a câmera:', error);
-            setHasCameraPermission(false)
+            // setHasCameraPermission(false)
           });
       } catch (error) {
         console.error('Error accessing the camera:', error);
@@ -66,14 +66,6 @@ export default function CameraComponent({
       }
     }
   };
-
-  // useEffect(() => {
-  //   return () => {
-  //     if (videoStream) {
-  //       videoStream.getTracks().forEach((track) => track.stop());
-  //     }
-  //   };
-  // }, [videoStream]);
 
   useEffect(() => {
     startCamera();
@@ -143,7 +135,7 @@ export default function CameraComponent({
             width={0}
             height={0}
             sizes="100vw"
-            style={{ width: '100%', height: 'auto' }}
+            style={{ width: '100%', maxHeight: '500px' }}
             className="rounded-lg"
           />
           <div className="flex items-center justify-around mt-2">

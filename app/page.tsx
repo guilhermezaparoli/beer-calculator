@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 type CardsProps = {
   brand: string;
-  vol: string;
+  volume: string;
   price: string;
   volPerPrice?: number | null;
   index?: number;
@@ -19,23 +19,23 @@ export default function Home() {
   const [cards, setCards] = useState<CardsProps[]>([
     {
       brand: '',
-      vol: '',
+      volume: '',
       price: 'R$ 0,00',
     },
     {
       brand: '',
-      vol: '',
+      volume: '',
       price: 'R$ 0,00',
     },
   ]);
   const [result, setResult] = useState<CardsProps[]>([]);
-
+  const cleanVolumeInput = (value: string) => value.replace('ml', '').trim();
   function onAddCard() {
     setCards((prev) => [
       ...prev,
       {
         brand: '',
-        vol: '',
+        volume: '',
         price: 'R$ 0,00',
       },
     ]);
@@ -45,12 +45,12 @@ export default function Home() {
     setCards([
       {
         brand: '',
-        vol: '',
+        volume: '',
         price: 'R$ 0,00',
       },
       {
         brand: '',
-        vol: '',
+        volume: '',
         price: 'R$ 0,00',
       },
     ]);
@@ -69,27 +69,28 @@ export default function Home() {
   }
 
   function calculateTotal() {
-    function parseVolume(vol: string): number {
-      const value = parseFloat(vol.replace(/[^\d.]/g, ''));
-      return vol.includes('L') ? value * 1000 : value;
-    }
 
-    const itemsWithVolPerPrice = cards.map((item, index) => {
+
+    const itemsWithPricePerLiter = cards.map((item, index) => {
       const priceNumber = parseFloat(
         item.price.replace('R$ ', '').replace(',', '.')
       );
-      const volumeNumber = parseVolume(item.vol);
-      const volPerPrice = priceNumber ? volumeNumber / priceNumber : 0;
-
+    
+      const volumeInLiters = Number(cleanVolumeInput(item.volume)) / 1000;
+    
+      const pricePerLiter =
+        priceNumber && volumeInLiters ? priceNumber / volumeInLiters : 0;
+    
       return {
         ...item,
         index: index + 1,
-        volPerPrice: Number(volPerPrice.toFixed(2)),
+        volPerPrice: Number(pricePerLiter.toFixed(2)),
       };
     });
+    
 
-    const itemsOrderedByVolPerPrice = itemsWithVolPerPrice.sort(
-      (a, b) => b.volPerPrice - a.volPerPrice
+    const itemsOrderedByVolPerPrice = itemsWithPricePerLiter.sort(
+      (a, b) =>  a.volPerPrice - b.volPerPrice
     );
 
     console.log(itemsOrderedByVolPerPrice, 'itemsOrderedByVolPerPrice');
@@ -98,7 +99,7 @@ export default function Home() {
   }
 
   function verifyErrors() {
-    const someEmptyField = cards.some((card) => !card.vol || !card.price);
+    const someEmptyField = cards.some((card) => !card.volume || !card.price);
     const someZeroField = cards.some((card) => card.price === 'R$ 0,00');
     if (cards.length <= 1) {
       toast.error('Adicione ao menos dois cards');
