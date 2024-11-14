@@ -88,7 +88,7 @@ export function BeerCard({
         handleInputChange('volume', String(volume) + "ml");
       }
       if (price) {
-        formatPriceBRL(price);
+        formatPriceBRL(String(price));
       }
 
       console.log(brand);
