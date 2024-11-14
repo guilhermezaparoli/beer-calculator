@@ -1,3 +1,5 @@
+'use client'
+
 import {  ImagePlusIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
@@ -109,7 +111,6 @@ export default function CameraComponent({
           id="image"
           accept="image/png, image/jpeg"
           onChange={(e) => {
-            console.log("Entrou");
             const file = e.target.files?.[0]
             if(file){
               if(file.type.startsWith("image/")){

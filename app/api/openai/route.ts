@@ -6,10 +6,8 @@ const openai = new OpenAI({
 });
 
 export const POST = async(req: Request) => {
-  console.log("Chegouu");
 
   const {imageUrl} = await req.json()
-  console.log(imageUrl);
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",

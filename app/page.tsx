@@ -93,7 +93,6 @@ export default function Home() {
       (a, b) =>  a.volPerPrice - b.volPerPrice
     );
 
-    console.log(itemsOrderedByVolPerPrice, 'itemsOrderedByVolPerPrice');
 
     setResult(itemsOrderedByVolPerPrice);
   }
@@ -111,7 +110,7 @@ export default function Home() {
 
     return cards.length <= 1 || someEmptyField || someZeroField;
   }
-  console.log(cards, 'cards');
+
   return (
     <>
       <div className="pt-4 px-6 overflow-y flex flex-col items-center">

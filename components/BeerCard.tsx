@@ -5,6 +5,7 @@ import CameraComponent from './CameraComponent';
 import { useState } from 'react';
 import { InputSelectCard } from './InputSelectCard';
 import { toast } from 'react-toastify';
+import useImageCompressor from '@/hooks/useImageCompressor';
 
 type itemProps = {
   brand: string;
@@ -28,9 +29,8 @@ export function BeerCard({
 }: BeerCardProps) {
   const [openCamera, setOpenCamera] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {loadingCompress, compressImage} = useImageCompressor()
   const handleInputChange = (field: keyof itemProps, newValue: string) => {
-
-  
     setCards((prevCards) =>
       prevCards.map((card, idx) =>
         idx === identificator ? { ...card, [field]: newValue } : card
@@ -39,34 +39,57 @@ export function BeerCard({
   };
 
   const handleVolumeChange = (newValue: string) => {
-    console.log(newValue, "newValuenewValuenewValue2");
 
-      handleInputChange('volume', newValue);
- 
+    handleInputChange('volume', newValue);
   };
 
   const formatPriceBRL = (newValue: string) => {
     let inputValue = String(newValue)?.replace(/\D/g, '');
-    console.log(inputValue);
     inputValue = (parseInt(inputValue) / 100).toFixed(2);
     inputValue = inputValue.replace('.', ',');
     inputValue = 'R$ ' + inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     handleInputChange('price', inputValue);
   };
 
-  function getImage(image: string) {
-    console.log(image, 'aquii');
+  function getImage(image: string | null) {
     setOpenCamera(false);
-    processImage(image);
+  
+    // Verifica se a imagem é válida e a comprime
+    const dataURLtoFile = (dataurl: string, filename: string): File => {
+      const arr = dataurl.split(",");
+      const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    };
+
+
+    if (image) {
+      const file = dataURLtoFile(image, "captured-image.png");
+      compressImage(file).then((compressedBase64) => {
+        if (compressedBase64) {
+          processImage(compressedBase64); // Processa a imagem comprimida
+        }
+      });
+    }
   }
+  
 
   function closeCamera() {
     setOpenCamera(false);
   }
 
-  const processImage = async (imageUrl: string) => {
-    console.log('chegou na função');
+  const processImage = async (imageUrl: string | null) => {
     setLoading(true);
+
+    if (!imageUrl) {
+      setLoading(false);
+      toast.error('Houve um erro ao processar a imagem');
+    }
     try {
       const response = await fetch('/api/openai', {
         method: 'POST',
@@ -85,18 +108,15 @@ export function BeerCard({
         handleInputChange('brand', String(brand));
       }
       if (volume) {
-        handleInputChange('volume', String(volume) + "ml");
+        handleInputChange('volume', String(volume) + 'ml');
       }
       if (price) {
         formatPriceBRL(String(price));
       }
 
-      console.log(brand);
-      console.log(String(volume));
-      console.log(price);
     } catch (error) {
       console.error('Error analyzing image:', error);
-      toast.error('Houve um erro ao processar a imagem')
+      toast.error('Houve um erro ao processar a imagem');
     } finally {
       setLoading(false);
     }
@@ -139,8 +159,15 @@ export function BeerCard({
                   handleInputChange('volume', value.replace('ml', ''));
                 }
               }}
-              suggestions={['269ml', '300ml', '355ml', '473ml', '500ml', '600ml', '1000ml']}
-           
+              suggestions={[
+                '269ml',
+                '300ml',
+                '355ml',
+                '473ml',
+                '500ml',
+                '600ml',
+                '1000ml',
+              ]}
             />
           </div>
 
@@ -157,7 +184,7 @@ export function BeerCard({
         </div>
       )}
 
-      {loading && (
+      {(loading || loadingCompress) && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 flex-col">
           <svg
             aria-hidden="true"
@@ -175,7 +202,13 @@ export function BeerCard({
               fill="currentFill"
             />
           </svg>
+          {loading && 
           <label className="text-white">Processando imagem...</label>
+        }
+          {loadingCompress &&
+        <label className="text-white">Comprimindo imagem...</label>
+          
+          }
         </div>
       )}
     </>
