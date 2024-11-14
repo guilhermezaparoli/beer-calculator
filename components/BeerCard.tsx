@@ -4,6 +4,7 @@ import { InputCard } from './InputCard';
 import CameraComponent from './CameraComponent';
 import { useState } from 'react';
 import { InputSelectCard } from './InputSelectCard';
+import { toast } from 'react-toastify';
 
 type itemProps = {
   brand: string;
@@ -28,14 +29,11 @@ export function BeerCard({
   const [openCamera, setOpenCamera] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleInputChange = (field: keyof itemProps, newValue: string) => {
-    console.log(newValue, 'newValuenewValue');
-    let newValueField = newValue;
-    if (field === 'volume' && newValueField.endsWith('ml')) {
-      newValueField = newValueField.replace('mlml', 'ml');
-    }
+
+  
     setCards((prevCards) =>
       prevCards.map((card, idx) =>
-        idx === identificator ? { ...card, [field]: newValueField } : card
+        idx === identificator ? { ...card, [field]: newValue } : card
       )
     );
   };
@@ -84,20 +82,21 @@ export function BeerCard({
       const { brand, volume, price } = JSON.parse(formattedString);
 
       if (brand) {
-        handleInputChange('brand', brand);
+        handleInputChange('brand', String(brand));
       }
       if (volume) {
-        handleInputChange('volume', volume);
+        handleInputChange('volume', String(volume) + "ml");
       }
       if (price) {
         formatPriceBRL(price);
       }
 
       console.log(brand);
-      console.log(volume);
+      console.log(String(volume));
       console.log(price);
     } catch (error) {
       console.error('Error analyzing image:', error);
+      toast.error('Houve um erro ao processar a imagem')
     } finally {
       setLoading(false);
     }
@@ -112,12 +111,12 @@ export function BeerCard({
           }`}</h1>
           <div className="flex items-center gap-2 ">
             <Camera
-              className="text-white"
+              className="text-white cursor-pointer"
               size={22}
               onClick={() => setOpenCamera(true)}
             />
             <Trash2
-              className="text-redTrash"
+              className="text-redTrash cursor-pointer"
               size={20}
               onClick={() => onDeleteCard(identificator)}
             />
