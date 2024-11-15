@@ -2,7 +2,8 @@
 import { BeerAddCard } from '@/components/BeerAddCard';
 import { BeerCard } from '@/components/BeerCard';
 import Image from 'next/image';
-import logo from '../assets/BeerPriceLogo.svg';
+import logo from '../assets/Calculadora-de-cerveja-logo.svg';
+import IconBeer from '../assets/beer-27 1.svg';
 import { useState } from 'react';
 import { Button } from '@/components/Button';
 import { ModalResult } from '@/components/ModalResult';
@@ -69,30 +70,26 @@ export default function Home() {
   }
 
   function calculateTotal() {
-
-
     const itemsWithPricePerLiter = cards.map((item, index) => {
       const priceNumber = parseFloat(
         item.price.replace('R$ ', '').replace(',', '.')
       );
-    
+
       const volumeInLiters = Number(cleanVolumeInput(item.volume)) / 1000;
-    
+
       const pricePerLiter =
         priceNumber && volumeInLiters ? priceNumber / volumeInLiters : 0;
-    
+
       return {
         ...item,
         index: index + 1,
         volPerPrice: Number(pricePerLiter.toFixed(2)),
       };
     });
-    
 
     const itemsOrderedByVolPerPrice = itemsWithPricePerLiter.sort(
-      (a, b) =>  a.volPerPrice - b.volPerPrice
+      (a, b) => a.volPerPrice - b.volPerPrice
     );
-
 
     setResult(itemsOrderedByVolPerPrice);
   }
@@ -113,23 +110,27 @@ export default function Home() {
 
   return (
     <>
-      <div className="pt-4 px-6 overflow-y flex flex-col items-center">
-        <div className="flex items-center  justify-center pb-20">
+      <div className="pt-4 px-6 overflow-y flex flex-col items-center justify-between ">
+        <div className="flex items-center relative  justify-center pb-16">
           <Image src={logo} alt="logo" />
+          <Image src={IconBeer} alt='ícone de cerveja' className='absolute -top-4 -right-12'/>
         </div>
-        <div className="flex flex-col gap-4 mb-10 ">
-          {cards.map((item, index) => (
-            <BeerCard
-              key={index}
-              value={item}
-              setCards={setCards}
-              identificator={index}
-              onDeleteCard={onDeleteCard}
-            />
-          ))}
+        <div>
+          <div className="flex flex-col gap-4 mb-10 ">
+            {cards.map((item, index) => (
+              <BeerCard
+                key={index}
+                value={item}
+                setCards={setCards}
+                identificator={index}
+                onDeleteCard={onDeleteCard}
+              />
+            ))}
+          </div>
+          <BeerAddCard onAddCard={onAddCard} />
         </div>
-        <BeerAddCard onAddCard={onAddCard} />
-        <footer className="mt-20 pb-4">
+
+        <footer className="mt-16 pb-4 flex flex-col items-center">
           <div className="flex items-center justify-center gap-5">
             <Button
               text="Limpar"
@@ -147,7 +148,17 @@ export default function Home() {
               }}
             />
           </div>
-
+          <p className="text-white text-xs mt-4 text-center">
+            Desenvolvido por{' '}
+            <a
+              href="https://www.linkedin.com/in/guilhermezaparoli/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              Guilherme Zaparoli Gomes
+            </a>
+          </p>
         </footer>
       </div>
 
