@@ -16,9 +16,22 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Beer calculator',
-  description: 'Beer calculator',
+  title: 'Calculadora de Cerveja - Compare Preços e Economize',
+  description: 
+    'Descubra a melhor opção de cerveja comparando preços por volume. Economize dinheiro ao escolher a cerveja mais barata por litro, de forma rápida e prática!',
+  keywords: [
+    'calculadora de cerveja',
+    'preço por litro',
+    'comparar preços de cerveja',
+    'economizar cerveja',
+    'melhor preço de cerveja',
+    'calculadora de bebidas',
+    'cervejas',
+  ],
+  authors: [{name: 'Guilherme Zaparoli Gomes', url: "https://www.linkedin.com/in/guilhermezaparoli/"}],
+  viewport: 'width=device-width, initial-scale=1.0',
 };
+
 
 export default function RootLayout({
   children,

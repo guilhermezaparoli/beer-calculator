@@ -3,7 +3,7 @@ import { BeerAddCard } from '@/components/BeerAddCard';
 import { BeerCard } from '@/components/BeerCard';
 import Image from 'next/image';
 import logo from '../assets/Calculadora-de-cerveja-logo.svg';
-import IconBeer from '../assets/beer-27 1.svg';
+import IconBeer from '../assets/beer-27.svg';
 import { useState } from 'react';
 import { Button } from '@/components/Button';
 import { ModalResult } from '@/components/ModalResult';
