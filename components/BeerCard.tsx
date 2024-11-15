@@ -81,6 +81,7 @@ export function BeerCard({
 
   function closeCamera() {
     setOpenCamera(false);
+    document.body.style.overflow = 'auto';
   }
 
   const processImage = async (imageUrl: string | null) => {
@@ -119,6 +120,7 @@ export function BeerCard({
       toast.error('Houve um erro ao processar a imagem');
     } finally {
       setLoading(false);
+      document.body.style.overflow = 'auto';
     }
   };
 

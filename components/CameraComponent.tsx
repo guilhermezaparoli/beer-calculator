@@ -87,7 +87,6 @@ export default function CameraComponent({
           className="absolute top-2 right-2  text-red-600"
           onClick={() => {
             close();
-            document.body.style.overflow = 'auto';
           }}
           size={34}
         />
