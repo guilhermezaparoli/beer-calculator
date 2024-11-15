@@ -5,7 +5,7 @@ type BeerAddCardProps = {
 };
 export function BeerAddCard({ onAddCard }: BeerAddCardProps) {
   return (
-    <button className=" w-full flex gap-2 items-center justify-center py-5 rounded-xl border border-dashed  max-w-[480px]" onClick={onAddCard}>
+    <button className=" w-full flex gap-2 items-center justify-center py-5 rounded-xl border border-dashed min-w-[300px] max-w-[480px]" onClick={onAddCard}>
       <Plus className="text-white" size={24} />
       <p className="text-white text-sm font-semibold">ADICIONAR CERVEJA</p>
     </button>
