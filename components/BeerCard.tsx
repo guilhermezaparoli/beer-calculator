@@ -121,16 +121,16 @@ export function BeerCard({
     }
   };
 
-  const checkCameraPermission = async (): Promise<void> => {
-    try {
-      // Tenta acessar a câmera
-      await navigator.mediaDevices.getUserMedia({ video: true });
-      setOpenCamera(true);
-    } catch (error) {
-      console.log(error);
-      toast.error('Permissão negada para a câmera.');
-    }
-  };
+  // const checkCameraPermission = async (): Promise<void> => {
+  //   try {
+  //     // Tenta acessar a câmera
+  //     await navigator.mediaDevices.getUserMedia({ video: true });
+  //     setOpenCamera(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error('Permissão negada para a câmera.');
+  //   }
+  // };
 
   return (
     <>
