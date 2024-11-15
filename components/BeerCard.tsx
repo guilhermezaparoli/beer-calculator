@@ -29,7 +29,8 @@ export function BeerCard({
 }: BeerCardProps) {
   const [openCamera, setOpenCamera] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {loadingCompress, compressImage} = useImageCompressor()
+  const { loadingCompress, compressImage } = useImageCompressor();
+
   const handleInputChange = (field: keyof itemProps, newValue: string) => {
     setCards((prevCards) =>
       prevCards.map((card, idx) =>
@@ -39,7 +40,6 @@ export function BeerCard({
   };
 
   const handleVolumeChange = (newValue: string) => {
-
     handleInputChange('volume', newValue);
   };
 
@@ -53,11 +53,11 @@ export function BeerCard({
 
   function getImage(image: string | null) {
     setOpenCamera(false);
-  
+
     // Verifica se a imagem é válida e a comprime
     const dataURLtoFile = (dataurl: string, filename: string): File => {
-      const arr = dataurl.split(",");
-      const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
+      const arr = dataurl.split(',');
+      const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
       const bstr = atob(arr[1]);
       let n = bstr.length;
       const u8arr = new Uint8Array(n);
@@ -67,9 +67,8 @@ export function BeerCard({
       return new File([u8arr], filename, { type: mime });
     };
 
-
     if (image) {
-      const file = dataURLtoFile(image, "captured-image.png");
+      const file = dataURLtoFile(image, 'captured-image.png');
       compressImage(file).then((compressedBase64) => {
         if (compressedBase64) {
           processImage(compressedBase64); // Processa a imagem comprimida
@@ -77,7 +76,6 @@ export function BeerCard({
       });
     }
   }
-  
 
   function closeCamera() {
     setOpenCamera(false);
@@ -114,13 +112,23 @@ export function BeerCard({
       if (price) {
         formatPriceBRL(String(price));
       }
-
     } catch (error) {
       console.error('Error analyzing image:', error);
       toast.error('Houve um erro ao processar a imagem');
     } finally {
       setLoading(false);
       document.body.style.overflow = 'auto';
+    }
+  };
+
+  const checkCameraPermission = async (): Promise<void> => {
+    try {
+      // Tenta acessar a câmera
+      await navigator.mediaDevices.getUserMedia({ video: true });
+      setOpenCamera(true);
+    } catch (error) {
+      console.log(error);
+      toast.error('Permissão negada para a câmera.');
     }
   };
 
@@ -135,7 +143,7 @@ export function BeerCard({
             <Camera
               className="text-white cursor-pointer"
               size={22}
-              onClick={() => setOpenCamera(true)}
+              onClick={() => checkCameraPermission()}
             />
             <Trash2
               className="text-redTrash cursor-pointer"
@@ -204,13 +212,12 @@ export function BeerCard({
               fill="currentFill"
             />
           </svg>
-          {loading && 
-          <label className="text-white">Processando imagem...</label>
-        }
-          {loadingCompress &&
-        <label className="text-white">Comprimindo imagem...</label>
-          
-          }
+          {loadingCompress && (
+            <label className="text-white">Comprimindo imagem...</label>
+          )}
+          {loading && (
+            <label className="text-white">Processando imagem...</label>
+          )}
         </div>
       )}
     </>
