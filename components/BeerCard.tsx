@@ -143,7 +143,7 @@ export function BeerCard({
             <Camera
               className="text-white cursor-pointer"
               size={22}
-              onClick={() => checkCameraPermission()}
+              onClick={() => setOpenCamera(true)}
             />
             <Trash2
               className="text-redTrash cursor-pointer"
