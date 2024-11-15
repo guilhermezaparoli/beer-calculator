@@ -113,7 +113,7 @@ export default function Home() {
       <div className="pt-4 px-6 overflow-y flex flex-col items-center justify-between ">
         <div className="flex items-center relative  justify-center pb-16">
           <Image src={logo} alt="logo" />
-          <Image src={IconBeer} alt='ícone de cerveja' className='absolute -top-4 -right-12'/>
+          <Image width={45} height={45} src={IconBeer} alt='ícone de cerveja' className='absolute -top-4 -right-11'/>
         </div>
         <div>
           <div className="flex flex-col gap-4 mb-10 ">
