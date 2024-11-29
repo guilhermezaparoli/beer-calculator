@@ -28,8 +28,7 @@ export const metadata: Metadata = {
     'calculadora de bebidas',
     'cervejas',
   ],
-  authors: [{name: 'Guilherme Zaparoli Gomes', url: "https://www.linkedin.com/in/guilhermezaparoli/"}],
-  viewport: 'width=device-width, initial-scale=1.0',
+  authors: [{name: 'Guilherme Zaparoli Gomes', url: "https://www.linkedin.com/in/guilhermezaparoli/"}]
 };
 
 

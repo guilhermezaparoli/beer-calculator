@@ -132,7 +132,7 @@ export default function CameraComponent({
             height={0}
             sizes="100vw"
             style={{ width: '100%', maxHeight: '500px' }}
-            className="rounded-lg"
+            className="rounded-lg object-cover"
           />
           <div className="flex items-center justify-around mt-2">
             <button
