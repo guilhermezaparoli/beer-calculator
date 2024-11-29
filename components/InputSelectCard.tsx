@@ -13,7 +13,7 @@ export function InputSelectCard({ suggestions, handleVolumeChange, onChange, val
 
   const handleSuggestionClick = (value: string) => {
     setIsFocused(false);
-    handleVolumeChange(value)
+    handleVolumeChange(value.replace("ml", ""))
   };
 
   return (
