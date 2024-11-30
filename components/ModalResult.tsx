@@ -19,7 +19,7 @@ export function ModalResult({ cards, close }: ResultProps) {
 
   return (
     cards.length > 0 && (
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-5">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 p-5">
         <div className="relative p-6 bg-gray-700 rounded-lg w-full max-w-lg">
           <X onClick={close} className="text-red-500 absolute top-2 right-2 cursor-pointer" />
           <h1 className="text-white text-xl font-semibold mb-4">Resultado das Melhores Opções:</h1>

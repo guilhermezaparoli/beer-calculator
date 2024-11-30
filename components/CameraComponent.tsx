@@ -71,7 +71,7 @@ export default function CameraComponent({
   }, []);
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center">
+    <div className="fixed inset-0 flex flex-col items-center justify-center">
       <div className="h-full w-full absolute inset-0">
         <video
           ref={videoRef}
@@ -98,7 +98,7 @@ export default function CameraComponent({
           htmlFor="image"
           className="absolute bottom-6 left-3/4 text-white"
         >
-          <ImagePlusIcon size={40} />
+          <ImagePlusIcon size={40} className='cursor-pointer' />
         </label>
         <input
           className="hidden"
