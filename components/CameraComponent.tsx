@@ -123,7 +123,7 @@ export default function CameraComponent({
 
       <canvas ref={canvasRef} className="hidden" />
       {capturedImage && (
-        <div className="absolute inset-0 flex flex-col  justify-center bg-black bg-opacity-50 p-4 rounded-lg">
+        <div className="absolute inset-0 flex flex-col  justify-center bg-black bg-opacity-50 p-4">
           <h2 className="text-white">Foto capturada:</h2>
           <Image
             src={capturedImage}
