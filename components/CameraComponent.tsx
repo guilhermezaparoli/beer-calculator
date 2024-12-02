@@ -68,9 +68,20 @@ export default function CameraComponent({
   useEffect(() => {
     startCamera();
     document.body.style.overflow = 'hidden';
+    verifyPermission()
   }, []);
 
-  return (
+  const verifyPermission = async () => {
+    const permissionStatus = await navigator.permissions.query({
+      name: 'camera' as PermissionName,
+    });
+    if(permissionStatus.state === "granted"){
+   
+    }
+   return permissionStatus.state
+  }
+
+  return  (
     <div className="fixed inset-0 flex flex-col items-center justify-center">
       <div className="h-full w-full absolute inset-0">
         <video

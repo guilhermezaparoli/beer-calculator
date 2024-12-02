@@ -132,6 +132,16 @@ export function BeerCard({
   //   }
   // };
 
+  const verifyPermission = async () => {
+    const permissionStatus = await navigator.permissions.query({
+      name: 'camera' as PermissionName,
+    });
+  
+   return permissionStatus.state
+  }
+
+
+
   return (
     <>
       <div className="p-3 pt-2 bg-gray500 rounded-xl">
@@ -143,7 +153,16 @@ export function BeerCard({
             <Camera
               className="text-white cursor-pointer"
               size={22}
-              onClick={() => setOpenCamera(true)}
+              onClick={async () => {
+                const permission = await verifyPermission()
+                console.log(permission);
+
+                if(permission !== "denied"){
+                  setOpenCamera(true)} else {
+                    toast.error("Habilite a permissão da câmera!")
+                  }
+                }
+                }
             />
             <Trash2
               className="text-redTrash cursor-pointer"
@@ -188,6 +207,7 @@ export function BeerCard({
           />
         </div>
       </div>
+      
       {openCamera && navigator.mediaDevices && (
         <div className="flex items-center justify-center h-screen">
           <CameraComponent getImage={getImage} close={closeCamera} />
